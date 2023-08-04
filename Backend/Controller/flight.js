@@ -7,9 +7,9 @@ const scrappigData= async(req,res)=>{
 
         const { months , date }=req.body
         
-        if(!months || !date){return res.send({status:'false',message:'empty field'})}
+        if(!months || !date){return res.send({status:false,message:'empty field'})}
     
-        const browser=await puppeteer.launch({ headless:"new",
+        const browser=await puppeteer.launch({ headless:false,
             defaultViewport: false});
             const page=await browser.newPage();
             await page.goto('https://www.google.com/travel/flights');
