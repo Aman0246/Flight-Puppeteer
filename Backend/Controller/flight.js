@@ -7,7 +7,7 @@ const scrappigData= async(req,res)=>{
 
         const { months , date }=req.body
         
-        if(!months || !date){return res.send({status:'false',message:'empty field'})}
+        if(!months || !date){return res.send({status:false,message:'empty field'})}
     
         const browser=await puppeteer.launch({ headless:"new",
             defaultViewport: false});
