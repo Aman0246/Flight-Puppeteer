@@ -135,7 +135,7 @@
     "proxy-from-env": "^1.1.0",
     "pstree.remy": "^1.1.8",
     "pump": "^3.0.0",
-    "puppeteer": "^20.9.0",
+    "puppeteer": "^10.0.0",
     "puppeteer-core": "^20.9.0",
     "qs": "^6.11.0",
     "queue-tick": "^1.0.1",
