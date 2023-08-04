@@ -1,7 +1,13 @@
-const { fdatasyncSync } = require('fs-extra');
 const puppeteer = require('puppeteer');
-(async()=>{
-    const browser=await puppeteer.launch({ headless: false,
+
+const scrappigData= async(req,res)=>{
+    console.log(req.body)
+
+    const { months , date }=req.body
+    
+    if(!months || !date){return res.send({status:'false',message:'empty field'})}
+
+    const browser=await puppeteer.launch({ headless:"new",
         defaultViewport: false});
         const page=await browser.newPage();
         await page.goto('https://www.google.com/travel/flights');
@@ -21,7 +27,7 @@ await page.waitForSelector('.MCs1Pd.UbEQCe.VfPpkd-OkbHre.VfPpkd-OkbHre-SfQLQb-M1
 await page.waitForSelector('.VfPpkd-TkwUic.VfPpkd-ksKsZd-mWPk3d-OWXEXe-AHe6Kc-XpnDCe.VfPpkd-ksKsZd-mWPk3d')
 // await page.screenshot({path:`./fligh${Date.now()}.jpg`})
 
-let a= await page.waitForSelector('.II2One.j0Ppje.zmMKJ.LbIaRd')
+ await page.waitForSelector('.II2One.j0Ppje.zmMKJ.LbIaRd')
         // Remove the old value from the input field
     await page.evaluate(() => {
         const inputField = document.querySelector('.II2One.j0Ppje.zmMKJ.LbIaRd');
@@ -37,7 +43,7 @@ let a= await page.waitForSelector('.II2One.j0Ppje.zmMKJ.LbIaRd')
 
            
        } catch (error) {
-        
+        return res.send({status:'false',message:'Data not Found'})
        }
 //Destination   and  selecting first Option
 try {
@@ -49,22 +55,21 @@ try {
     await page.click(".n4HaVc.sMVRZe.pIWVuc")
     
 } catch (error) {
-    
+    return res.send({status:'false',message:'Data not Found'})
 }
 
 //Date selection
 await page.click('.TP4Lpb.eoY5cb.j0Ppje');
 await page.waitForSelector(".Bc6Ryd.ydXJud")
-
-
-let months='December'
+//months
 try {
     await page.waitForSelector(".Bc6Ryd.ydXJud")
     await page.waitForSelector('.BgYkof.B5dqIf.qZwLKe')
     let allMonths = await page.$$eval('.BgYkof.B5dqIf.qZwLKe', elements => elements.map(element => element.textContent));
     let finds= allMonths.includes(months)
-console.log(finds)
-console.log(allMonths)
+    if(finds== -1) console.log("Month not found")
+// console.log(finds)
+// console.log(allMonths)
     let currentmonth = await page.$eval('.BgYkof.B5dqIf.qZwLKe', elements => elements.textContent);
     console.log("currentmonth", currentmonth);
     
@@ -82,7 +87,7 @@ console.log(allMonths)
         }
     }
     // clicking on Date 
-    let date=20
+
     //getting all innerHtml
     let singleDate=await page.$$eval(`#ow81 > div.ZGEB9c.yRXJAe.P0ukfb.icWGef.bgJkKe.BtDLie.iWO5td > div > div.rj7qGc.ksI2Bc.P0ukfb > div.qxcyof.RNniQb > div > div > div.SJyhnc > div >  div:nth-child(${indedofFind+1}) > div:nth-child(3) > div > div`,elements => elements.map(elements => elements.innerHTML))
     //Chalange to get Selector for clicking throuh innerHTML
@@ -113,11 +118,37 @@ if (targetElement) {
 }
 
 } catch (error) {
-    console.log(error)
+    return res.send({status:'false',message:'Data not Found'})
 }
 //Taking Data of All flights
-await page.evaluate(() => new Promise((resolve) => setTimeout(resolve,1000)));
-let allFlightData=await page.$$eval('.Rk10dc > li > div > div.yR1fYc > div.mxvQLc.ceis6c.uj4xv.uVdL1c.A8qKrc > div.OgQvJf.nKlB3b > div.Ir0Voe > div.sSHqwe.tPgKwe.ogfYpf > div.sSHqwe.tPgKwe.ogfYpf ',options => options.map(option => option.textContent))
-console.log(allFlightData)
+console.log("amana")
+await page.waitForSelector('.PSZ8D.EA71Tc')
+await page.waitForSelector('.Ep1EJd')
+await page.waitForSelector('.FXkZv')
+await page.waitForSelector('#yDmH0d > c-wiz.zQTmif.SSPGKf > div > div:nth-child(2) > c-wiz > div.cKvRXe > c-wiz > div.PSZ8D.EA71Tc > div.FXkZv > div:nth-child(4)')
+let getListofFlight=await page.$$('#yDmH0d > c-wiz.zQTmif.SSPGKf > div > div:nth-child(2) > c-wiz > div.cKvRXe > c-wiz > div.PSZ8D.EA71Tc > div.FXkZv > div:nth-child(4) > ul > li')
+let dataofFlight=[]
+await page.waitForSelector('ul > li > div > div.yR1fYc > div > div.OgQvJf.nKlB3b > div.U3gSDe.ETvUZc > div.BVAVmf.I11szd.POX3ye > div.YMlIz.FpEdX > span')
+let ticketPrice=await page.$$eval('#yDmH0d > c-wiz.zQTmif.SSPGKf > div > div:nth-child(2) > c-wiz > div.cKvRXe > c-wiz > div.PSZ8D.EA71Tc > div.FXkZv > div:nth-child(4) > ul > li > div > div.yR1fYc > div > div.OgQvJf.nKlB3b > div.U3gSDe.ETvUZc > div.BVAVmf.I11szd.POX3ye > div.YMlIz.FpEdX > span',elements =>{ return elements.map(element => element.textContent)})
+let  flightname=await page.$$eval('#yDmH0d > c-wiz.zQTmif.SSPGKf > div > div:nth-child(2) > c-wiz > div.cKvRXe > c-wiz > div.PSZ8D.EA71Tc > div.FXkZv > div:nth-child(4) > ul > li > div > div.yR1fYc > div > div.OgQvJf.nKlB3b > div.Ir0Voe > div.sSHqwe.tPgKwe.ogfYpf',elements =>{ return elements.map(element => element.textContent)})
 
-})();
+let flightinfo= await page.$$eval('#yDmH0d > c-wiz.zQTmif.SSPGKf > div > div:nth-child(2) > c-wiz > div.cKvRXe > c-wiz > div.PSZ8D.EA71Tc > div.FXkZv > div:nth-child(4) > ul > li > div > div.yR1fYc > div > div.OgQvJf.nKlB3b > div.Ir0Voe > div.zxVSec.YMlIz.tPgKwe.ogfYpf > span.mv1WYe',elements =>{ return elements.map(element => element.textContent)}) 
+console.log("A",flightinfo)
+
+
+try {
+    for(let i=0;i<getListofFlight.length;i++){      
+        
+         dataofFlight.push({flightname:flightname[i],ticketPrice:ticketPrice[i],flightinfo:flightinfo[i]})
+    }
+    
+} catch (error) {
+    return res.send({status:'false',message:'Data not Found'}) 
+}
+
+res.send({status:true,message:'Flight data',data:dataofFlight})
+
+
+}
+
+module.exports={scrappigData}
