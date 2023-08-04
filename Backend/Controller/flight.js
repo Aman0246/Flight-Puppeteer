@@ -82,7 +82,6 @@ try {
             await page.waitForSelector('.d53ede.rQItBb.FfP4Bc.Gm3csc')
             await page.click ('.d53ede.rQItBb.FfP4Bc.Gm3csc')
             await page.evaluate(() => new Promise((resolve) => setTimeout(resolve,300)));
-            console.log("currentmonth",currentmonth)
             initial++
         }
     }
@@ -133,7 +132,7 @@ let ticketPrice=await page.$$eval('#yDmH0d > c-wiz.zQTmif.SSPGKf > div > div:nth
 let  flightname=await page.$$eval('#yDmH0d > c-wiz.zQTmif.SSPGKf > div > div:nth-child(2) > c-wiz > div.cKvRXe > c-wiz > div.PSZ8D.EA71Tc > div.FXkZv > div:nth-child(4) > ul > li > div > div.yR1fYc > div > div.OgQvJf.nKlB3b > div.Ir0Voe > div.sSHqwe.tPgKwe.ogfYpf',elements =>{ return elements.map(element => element.textContent)})
 
 let flightinfo= await page.$$eval('#yDmH0d > c-wiz.zQTmif.SSPGKf > div > div:nth-child(2) > c-wiz > div.cKvRXe > c-wiz > div.PSZ8D.EA71Tc > div.FXkZv > div:nth-child(4) > ul > li > div > div.yR1fYc > div > div.OgQvJf.nKlB3b > div.Ir0Voe > div.zxVSec.YMlIz.tPgKwe.ogfYpf > span.mv1WYe',elements =>{ return elements.map(element => element.textContent)}) 
-console.log("A",flightinfo)
+
 
 
 try {
@@ -145,7 +144,7 @@ try {
 } catch (error) {
     return res.send({status:'false',message:'Data not Found'}) 
 }
-
+console.log("dataofFlight",dataofFlight)
 res.send({status:true,message:'Flight data',data:dataofFlight})
 
 
