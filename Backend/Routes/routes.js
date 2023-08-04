@@ -2,6 +2,6 @@ const express=require('express')
 const { scrappigData } = require('../Controller/flight')
 const routes=express.Router()
 
-routes.post('/scrappigData',scrappigData)
+routes.get('/scrappigData',scrappigData)
 
 module.exports={routes}
