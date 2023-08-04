@@ -188,8 +188,13 @@
     "yauzl": "^2.10.0"
   },
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon index.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.22.9",
+    "@babel/core": "^7.22.9",
+    "@babel/preset-env": "^7.22.9"
+  }
 }
