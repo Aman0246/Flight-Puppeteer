@@ -3,39 +3,40 @@ const puppeteer = require('puppeteer');
 const scrappigData= async(req,res)=>{
     try {
         
-        console.log(req.body)
-
-        const { months , date }=req.body
         
-        if(!months || !date){return res.send({status:false,message:'empty field'})}
-    
-        const browser=await puppeteer.launch({ headless:false,
+        const { months , date ,from ,to ,visible}=req.body
+        // console.log(req.body)
+        
+        if(!months || !date || !from ||!to){return res.send({status:false,message:'empty field'})}
+        //false
+        const browser=await puppeteer.launch({ headless:visible?false:"new",
             defaultViewport: false});
             const page=await browser.newPage();
             await page.goto('https://www.google.com/travel/flights');
             await page.waitForSelector('.V00Bye.ESCxub.KckZb')
+            
+            // source
+            await Promise.all([
+                await page.waitForSelector('.Maqf5d'),
+                await page.waitForSelector('.RLVa8.GeHXyb'),
+                await page.click('.RLVa8.GeHXyb'),
+            ])
+            await page.waitForSelector('.VfPpkd-rymPhb.r6B9Fd.bwNLcf.P2Hi5d.VfPpkd-OJnkse')
+            await page.waitForSelector('#yDmH0d > c-wiz.zQTmif.SSPGKf > div > div:nth-child(2) > c-wiz > div.cKvRXe > c-wiz > div.vg4Z0e > div:nth-child(1) > div.SS6Dqf.POQx1c > div.AJxgH > div > div.Maqf5d > div.RLVa8.GeHXyb > div > div > div > div.VfPpkd-xl07Ob-XxIAqe.VfPpkd-xl07Ob.VfPpkd-YPmvEd.s8kOBc.dmaMHc.VfPpkd-xl07Ob-XxIAqe-OWXEXe-uxVfW-FNFY6c-uFfGwd.VfPpkd-xl07Ob-XxIAqe-OWXEXe-FNFY6c > ul > li:nth-child(3)')
+            const firstmatch =  await page.click('#yDmH0d > c-wiz.zQTmif.SSPGKf > div > div:nth-child(2) > c-wiz > div.cKvRXe > c-wiz > div.vg4Z0e > div:nth-child(1) > div.SS6Dqf.POQx1c > div.AJxgH > div > div.Maqf5d > div.RLVa8.GeHXyb > div > div > div > div.VfPpkd-xl07Ob-XxIAqe.VfPpkd-xl07Ob.VfPpkd-YPmvEd.s8kOBc.dmaMHc.VfPpkd-xl07Ob-XxIAqe-OWXEXe-uxVfW-FNFY6c-uFfGwd.VfPpkd-xl07Ob-XxIAqe-OWXEXe-FNFY6c > ul > li:nth-child(3)')
     
-    // source
-    await Promise.all([
-        await page.waitForSelector('.Maqf5d'),
-        await page.waitForSelector('.RLVa8.GeHXyb'),
-        await page.click('.RLVa8.GeHXyb'),
-    ])
-    await page.waitForSelector('.VfPpkd-rymPhb.r6B9Fd.bwNLcf.P2Hi5d.VfPpkd-OJnkse')
-    await page.waitForSelector('#yDmH0d > c-wiz.zQTmif.SSPGKf > div > div:nth-child(2) > c-wiz > div.cKvRXe > c-wiz > div.vg4Z0e > div:nth-child(1) > div.SS6Dqf.POQx1c > div.AJxgH > div > div.Maqf5d > div.RLVa8.GeHXyb > div > div > div > div.VfPpkd-xl07Ob-XxIAqe.VfPpkd-xl07Ob.VfPpkd-YPmvEd.s8kOBc.dmaMHc.VfPpkd-xl07Ob-XxIAqe-OWXEXe-uxVfW-FNFY6c-uFfGwd.VfPpkd-xl07Ob-XxIAqe-OWXEXe-FNFY6c > ul > li:nth-child(3)')
-    const firstmatch =  await page.click('#yDmH0d > c-wiz.zQTmif.SSPGKf > div > div:nth-child(2) > c-wiz > div.cKvRXe > c-wiz > div.vg4Z0e > div:nth-child(1) > div.SS6Dqf.POQx1c > div.AJxgH > div > div.Maqf5d > div.RLVa8.GeHXyb > div > div > div > div.VfPpkd-xl07Ob-XxIAqe.VfPpkd-xl07Ob.VfPpkd-YPmvEd.s8kOBc.dmaMHc.VfPpkd-xl07Ob-XxIAqe-OWXEXe-uxVfW-FNFY6c-uFfGwd.VfPpkd-xl07Ob-XxIAqe-OWXEXe-FNFY6c > ul > li:nth-child(3)')
-    
-    await page.waitForSelector('.MCs1Pd.UbEQCe.VfPpkd-OkbHre.VfPpkd-OkbHre-SfQLQb-M1Soyc-bN97Pc.VfPpkd-aJasdd-RWgCYc-wQNmvb.ib1Udf.VfPpkd-rymPhb-ibnC6b.VfPpkd-rymPhb-ibnC6b-OWXEXe-SfQLQb-M1Soyc-Bz112c.VfPpkd-rymPhb-ibnC6b-OWXEXe-SfQLQb-Woal0c-RWgCYc'),
-    await page.waitForSelector('.VfPpkd-TkwUic.VfPpkd-ksKsZd-mWPk3d-OWXEXe-AHe6Kc-XpnDCe.VfPpkd-ksKsZd-mWPk3d')
+            await page.waitForSelector('.MCs1Pd.UbEQCe.VfPpkd-OkbHre.VfPpkd-OkbHre-SfQLQb-M1Soyc-bN97Pc.VfPpkd-aJasdd-RWgCYc-wQNmvb.ib1Udf.VfPpkd-rymPhb-ibnC6b.VfPpkd-rymPhb-ibnC6b-OWXEXe-SfQLQb-M1Soyc-Bz112c.VfPpkd-rymPhb-ibnC6b-OWXEXe-SfQLQb-Woal0c-RWgCYc'),
+            await page.waitForSelector('.VfPpkd-TkwUic.VfPpkd-ksKsZd-mWPk3d-OWXEXe-AHe6Kc-XpnDCe.VfPpkd-ksKsZd-mWPk3d')
     // await page.screenshot({path:`./fligh${Date.now()}.jpg`})
     
      await page.waitForSelector('.II2One.j0Ppje.zmMKJ.LbIaRd')
             // Remove the old value from the input field
-        await page.evaluate(() => {
-            const inputField = document.querySelector('.II2One.j0Ppje.zmMKJ.LbIaRd');
-            inputField.value = '';
-        });
-        await page.type('.II2One.j0Ppje.zmMKJ.LbIaRd',"Delhi")
+            await page.evaluate(() => {
+                const inputField = document.querySelector('.II2One.j0Ppje.zmMKJ.LbIaRd');
+                inputField.value = '';
+            });
+            
+        await page.type('.II2One.j0Ppje.zmMKJ.LbIaRd',from)
         await page.evaluate(() => new Promise((resolve) => setTimeout(resolve,300)));
         //---------------------------------
           //selecting first option
@@ -51,7 +52,7 @@ const scrappigData= async(req,res)=>{
     try {
         await page.waitForSelector(".e5F5td.vxNK6d")
         await page.click(".e5F5td.vxNK6d")
-        await page.type('.e5F5td.vxNK6d',"Mumbai")
+        await page.type('.e5F5td.vxNK6d',to)
         await page.evaluate(() => new Promise((resolve) => setTimeout(resolve,300)));
         await page.waitForSelector('.n4HaVc.sMVRZe.pIWVuc')
         await page.click(".n4HaVc.sMVRZe.pIWVuc")
@@ -107,11 +108,23 @@ const scrappigData= async(req,res)=>{
     }
     if (targetElement) {
         //final Click on Date
+        
+        await targetElement.click();
+        await targetElement.click();
+        await page.evaluate(() => new Promise((resolve) => setTimeout(resolve,300)));
+        await targetElement.click();
+        await targetElement.click();
+        await targetElement.click();
+        await page.evaluate(() => new Promise((resolve) => setTimeout(resolve,300)));
       await targetElement.click();
+      targetElement&& targetElement.click();
+      
       await page.evaluate(() => new Promise((resolve) => setTimeout(resolve,300)));
       //click Search Done Button
+      
       await page.click('#ow81 > div.ZGEB9c.yRXJAe.P0ukfb.icWGef.bgJkKe.BtDLie.iWO5td > div > div.akjk5c.FrVb0c > div.WXaAwc')
       //Click on Search
+      await page.evaluate(() => new Promise((resolve) => setTimeout(resolve,300)));
       await page.click('#yDmH0d > c-wiz.zQTmif.SSPGKf > div > div:nth-child(2) > c-wiz > div.cKvRXe > c-wiz > div.vg4Z0e > div:nth-child(1) > div.SS6Dqf.POQx1c > div.MXvFbd > div > button > div.VfPpkd-Jh9lGc')
       
     } else {
@@ -135,18 +148,29 @@ const scrappigData= async(req,res)=>{
     
     let flightinfo= await page.$$eval('#yDmH0d > c-wiz.zQTmif.SSPGKf > div > div:nth-child(2) > c-wiz > div.cKvRXe > c-wiz > div.PSZ8D.EA71Tc > div.FXkZv > div:nth-child(4) > ul > li > div > div.yR1fYc > div > div.OgQvJf.nKlB3b > div.Ir0Voe > div.zxVSec.YMlIz.tPgKwe.ogfYpf > span.mv1WYe',elements =>{ return elements.map(element => element.textContent)}) 
     
+    let flightimg= await page.$$eval('#yDmH0d > c-wiz.zQTmif.SSPGKf > div > div:nth-child(2) > c-wiz > div.cKvRXe > c-wiz > div.PSZ8D.EA71Tc > div.FXkZv > div:nth-child(4) > ul > li > div > div.yR1fYc > div > div.OgQvJf.nKlB3b > div.x8klId.I11szd > div.EbY4Pc.P2UJoe',elements =>{ return elements.map(element => element.getAttribute("style"))}) 
+    // console.log(flightimg)
+    const imageUrls = flightimg.map((str) => {
+        const matches = str.match(/url\((.*?)\)/g);
+        if (matches) {
+          // Extracting the URL from the matched substring
+          return matches.map((match) => match.slice(4, -1));
+        }
+        return null;
+      });
+    
     
     
     try {
         for(let i=0;i<getListofFlight.length;i++){      
             
-             dataofFlight.push({flightname:flightname[i],ticketPrice:ticketPrice[i],flightinfo:flightinfo[i]})
+             dataofFlight.push({flightname:flightname[i],ticketPrice:ticketPrice[i],flightinfo:flightinfo[i],flightimg:imageUrls[i]})
         }
         
     } catch (error) {
         return res.send({status:'false',message:'Data not Found'}) 
     }
-    console.log("dataofFlight",dataofFlight)
+    // console.log("dataofFlight",dataofFlight)
     res.send({status:true,message:'Flight data',data:dataofFlight})
     
     
@@ -157,7 +181,7 @@ const scrappigData= async(req,res)=>{
 
     
 } catch (error) {
-    console.log("error",error)
+    // console.log("error",error)
     res.send({status:false,message:`Flight data crashed:: ${error}`})
 }
 
