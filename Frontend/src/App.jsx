@@ -1,15 +1,17 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import Box from '@mui/material/Box';
+import Home from './Pages/Home';
+import axios from 'axios'
 
+axios.defaults.baseURL = import.meta.env.VITE_PORT;
+axios.defaults.withCredentials = true;
 function App() {
 
 
   return (
-    <>
-    hellow
-         </>
+    <Box>
+    <Home/>
+    </Box>
   )
 }
 
