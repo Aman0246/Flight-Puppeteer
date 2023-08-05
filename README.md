@@ -3,6 +3,10 @@
 ![image](https://github.com/Aman0246/Flight-Puppeteer-Web-Scrapping/assets/130737436/b69cbb31-28ff-4905-9900-ac55f1803f30)
   
 
+https://github.com/Aman0246/Flight-Puppeteer-Web-Scrapping/assets/130737436/b6660377-9c33-41df-a3b8-729d0541dfe8
+
+
+
 **Overview:**
 
 This project is a web scraping and web automation application built using Puppeteer, a Node.js library, to extract real-time flight prices and details from Google Flights. The application provides users with up-to-date flight information and prices for their desired routes, facilitating easier and more informed travel planning.
