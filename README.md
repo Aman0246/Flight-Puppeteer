@@ -23,7 +23,7 @@ This project is a web scraping and web automation application built using Puppet
 
 1. Clone the repository from GitHub:
 ```
-git clone https://github.com/your_username/flight-price-scraper.git
+git clone [https://github.com/your_username/flight-price-scraper.git](https://github.com/Aman0246/Flight-Puppeteer-Web-Scrapping.git)
 cd flight-price-scraper
 ```
 
